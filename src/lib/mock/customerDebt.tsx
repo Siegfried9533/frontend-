@@ -1,0 +1,17 @@
+export const customerDebts = [
+    { name: "John Smith", phone: "0801111222", total: 850000, unpaidOrders: 1, lastTransaction: "12/05/2025", status: "Còn nợ" },
+    { name: "Emma Johnson", phone: "0802222333", total: 0, unpaidOrders: 0, lastTransaction: "11/05/2025", status: "Đã thanh toán" },
+    { name: "Liam Brown", phone: "0803333444", total: 2300000, unpaidOrders: 3, lastTransaction: "09/05/2025", status: "Còn nợ" },
+    { name: "Olivia Garcia", phone: "0804444555", total: 0, unpaidOrders: 0, lastTransaction: "07/05/2025", status: "Đã thanh toán" },
+    { name: "Noah Martinez", phone: "0805555666", total: 125000, unpaidOrders: 1, lastTransaction: "06/05/2025", status: "Còn nợ" },
+    { name: "Ava Davis", phone: "0806666777", total: 0, unpaidOrders: 0, lastTransaction: "05/05/2025", status: "Đã thanh toán" },
+    { name: "William Rodriguez", phone: "0807777888", total: 980000, unpaidOrders: 2, lastTransaction: "04/05/2025", status: "Còn nợ" },
+    { name: "Sophia Wilson", phone: "0808888999", total: 0, unpaidOrders: 0, lastTransaction: "03/05/2025", status: "Đã thanh toán" },
+    { name: "James Anderson", phone: "0809999000", total: 650000, unpaidOrders: 1, lastTransaction: "02/05/2025", status: "Còn nợ" },
+    { name: "Isabella Thomas", phone: "0810000111", total: 0, unpaidOrders: 0, lastTransaction: "01/05/2025", status: "Đã thanh toán" },
+    { name: "Benjamin Taylor", phone: "0811111222", total: 470000, unpaidOrders: 2, lastTransaction: "30/04/2025", status: "Còn nợ" },
+    { name: "Mia Lee", phone: "0812222333", total: 0, unpaidOrders: 0, lastTransaction: "29/04/2025", status: "Đã thanh toán" },
+    { name: "Elijah Harris", phone: "0813333444", total: 1500000, unpaidOrders: 3, lastTransaction: "28/04/2025", status: "Còn nợ" },
+    { name: "Charlotte Clark", phone: "0814444555", total: 0, unpaidOrders: 0, lastTransaction: "27/04/2025", status: "Đã thanh toán" },
+    { name: "Lucas Lewis", phone: "0815555666", total: 780000, unpaidOrders: 1, lastTransaction: "26/04/2025", status: "Còn nợ" },
+];
