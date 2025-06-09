@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import ModalProvider from "@/app/customer/providers/ModalProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,28 +21,25 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RootLayout({
+export default function CustomerLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className="min-h-screen bg-background font-sans antialiased hide-scrollbar"
-        style={{ fontFamily: 'var(--font-sans)' }}
+    <div className="min-h-screen bg-background font-sans antialiased hide-scrollbar" style={{ fontFamily: 'var(--font-sans)' }}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+        suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-          suppressHydrationWarning
-        >
+        <AuthProvider>
           {children}
           <ModalProvider />
-        </ThemeProvider>
-      </body>
-    </html>
+        </AuthProvider>
+      </ThemeProvider>
+    </div>
   );
 }

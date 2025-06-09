@@ -30,7 +30,7 @@ const CategoryPage = () => {
             >
               <div className="relative w-full h-[16rem] p-2">
                 <Image
-                  src={category.image}
+                  src={category.image || ""}
                   fill
                   alt={category.name}
                   className="w-full h-64 object-contain"

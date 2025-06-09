@@ -1,9 +1,12 @@
-import SignUpForm from "@/components/forms/SignUpForm";
+'use client';
+import { useRouter } from 'next/navigation';
 
-const SignupPage = () => {
-  return (
-    <SignUpForm />
-  );
+const SomeComponent = () => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push('/auth/sign-up');
+  };
+
+  return <button onClick={handleClick}>Go to Sign Up</button>;
 };
-
-export default SignupPage;

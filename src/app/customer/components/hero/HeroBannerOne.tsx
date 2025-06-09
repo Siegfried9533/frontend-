@@ -74,8 +74,8 @@ const HeroBannerOne = () => {
                   <Image
                     className="bg-transparent rotate-6 relative z-50 object-contain"
                     src={data.images[0]}
-                    width={500}
-                    height={500}
+                    width={300}
+                    height={300}
                     alt="banner image"
                     priority
                     unoptimized

@@ -14,12 +14,12 @@ const ProductDetailsPage = () => {
       <div className="py-2">
         <BreadcrumbComponent
           links={["/dashboard", "/products"]}
-          pageText={product.name}
+          pageText={product.title}
         />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:gap-8">
         {/* Product Gallery */}
-        <ProductGallery isInModal={false} images={product?.images!} />
+        <ProductGallery isInModal={false} images={[product?.image!]} />
         {/* product details */}
         <ProductDetails product={product!} />
       </div>

@@ -21,27 +21,30 @@ const ProductGallery = ({ images, isInModal }: ProductGalleryProps) => {
         className={cn(
           "relative w-full rounded-xl overflow-hidden bg-gray-200",
           isInModal
-            ? "w-full lg:min-w-[30rem] h-[15rem] lg:h-[25rem]"
-            : "w-full lg:min-w-[30rem] h-[20rem] lg:h-[30rem]"
+            ? "aspect-[5/8] w-full lg:min-w-[30rem]"
+            : "aspect-[5/8] w-full lg:min-w-[30rem]"
         )}
       >
         <Image
-          className="object-contain "
+          className="object-cover"
           src={selectedImage}
           alt="product"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          quality={85}
         />
       </div>
       <div className="flex items-center gap-2 p-2 overflow-auto hide-scrollbar mt-2">
         {images.map((image) => (
           <Image
             onClick={() => handleImageSelection(image)}
-            className={cn("rounded-md object-cover border", image === selectedImage && 'ring-2')}
+            className={cn("rounded-md object-cover border aspect-[5/8]", image === selectedImage && 'ring-2')}
             src={image}
             alt="product"
             key={image}
             width={100}
-            height={100}
+            height={160}
+            quality={75}
           />
         ))}
       </div>

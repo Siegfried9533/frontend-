@@ -5,16 +5,13 @@ import AddToCartBtn from "../buttons/AddToCartBtn";
 import ProductDescription from "../product/ProductDescription";
 import RatingReview from "../others/RatingReview";
 import ProductGallery from "../product/ProductGallery";
-import { useProductQuickViewStore } from "@/app/customer/store/productQuickViewStore";
+import useProductQuickViewStore from "@/app/customer/store/productQuickViewStore";
 import { Button } from "../ui/button";
 import { X } from "lucide-react";
-import ProductColorSelection from "../product/ProductColorSelection";
 import ProductQuantityChange from "../product/ProductQuantityChange";
-import ProductTab from "../product/ProductTab";
 import { calculateDiscount } from "@/app/customer/lib/calculateDiscount";
 
 const ProductQuickViewModal = () => {
-  const [selectedColor, setSelectedColor] = useState("");
   const [quantity, setQuantity] = useState(1);
   const { isOpen, closeModal, product } = useProductQuickViewStore();
 
@@ -55,44 +52,43 @@ const ProductQuickViewModal = () => {
           <div className="bg-white dark:bg-slate-800 p-4 lg:p-8 rounded-lg shadow-lg h-[95%] w-[90%] lg:w-[80%] lg:h-[90%] overflow-auto hide-scrollbar">
             {product && (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {/* Product Gallery */}
-                <ProductGallery isInModal={true} images={product.images} />
+                {/* Product Image */}
+                <div className="relative aspect-square">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="object-cover w-full h-full rounded-lg"
+                  />
+                </div>
                 <div className="space-y-2">
                   {/* Category */}
                   <small className="bg-lime-500 py-1 px-4 rounded-full w-fit">
                     {product.category}
                   </small>
-                  {/* Product Name */}
+                  {/* Product Title */}
                   <h2 className="text-2xl md:text-3xl font-bold capitalize">
-                    {product.name}
+                    {product.title}
                   </h2>
-                  {/* Rating and Review */}
+                  {/* Rating */}
                   <RatingReview
-                    rating={product.rating || 0}
-                    review={product.reviews.length || 0}
+                    rating={product.rating}
+                    review={0}
                   />
                   {/* Product Description */}
                   <ProductDescription description={product.description} />
 
                   {/* product stock */}
                   <div className="">
-                    {product.stockItems === 0 ? (
+                    {product.quantity === 0 ? (
                       <p className="text-lg w-fit rounded-md">
                         out of stock
                       </p>
                     ) : (
                       <p className="text-lg w-fit rounded-md text-muted-foreground">
-                        Only {product.stockItems} items in stock
+                        Only {product.quantity} items in stock
                       </p>
                     )}
                   </div>
-
-                  {/* product colors */}
-                  <ProductColorSelection
-                    allColors={product.color!}
-                    color={selectedColor}
-                    setColor={setSelectedColor}
-                  />
 
                   <div className="flex items-center gap-6 !my-4">
                     <div className="">
@@ -116,17 +112,13 @@ const ProductQuickViewModal = () => {
                   >
                     {/* Add To Cart Button */}
                     <AddToCartBtn
-                      product={{ ...product, quantity, selectedColor }}
+                      product={{ ...product, quantity, selectedColor: "default" }}
                     />
                     {/* Buy Now Button */}
                     <BuyNowBtn
-                      product={{ ...product, quantity, selectedColor }}
+                      product={{ ...product, quantity, selectedColor: "default" }}
                     />
                   </div>
-                  <ProductTab
-                    aboutItem={product?.aboutItem!}
-                    reviews={product.reviews}
-                  />
                 </div>
               </div>
             )}

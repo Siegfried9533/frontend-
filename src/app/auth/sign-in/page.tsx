@@ -1,46 +1,48 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
-import Signin from "@/app/auth/components/Signin";
+import Signin from "@/app/auth/components/Signin/index";
 import Breadcrumb from "@/app/admin/components/common/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import axios from 'axios';
 
 export default function SignIn() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
+  // Hàm xử lý đăng nhập sử dụng fetch
+  // Bước 1: Gửi request đăng nhập tới backend
+  // Bước 2: Nhận response chứa token và roles
+  // Bước 3: Lưu token và roles vào localStorage
+  // Bước 4: Kiểm tra role, nếu là admin thì chuyển hướng sang trang admin, ngược lại chuyển sang trang customer
   const handleLogin = async (username: string, password: string) => {
     setLoading(true);
     setError("");
-    console.log('Attempting login with username:', username);
-
     try {
-      const result = await signIn('credentials', {
-        username,
-        password,
-        redirect: false,
-        callbackUrl: '/customer'
-      });
+      const res = await axios.post<{ jwtToken: string; roles: string[] }>(
+        "http://localhost:8080/api/auth/signin",
+        { username, password }
+      );
+      console.log("RESPONSE DATA:", res.data);
+      const { jwtToken: token, roles } = res.data;
 
-      console.log('Next-auth signIn result:', result);
+      // Lưu token và roles vào localStorage để sử dụng cho các request sau
+      localStorage.setItem("token", token);
+      localStorage.setItem("roles", JSON.stringify(roles));
 
-      if (result?.error) {
-        console.error('Sign in failed:', result.error);
-        setError(result.error === 'CredentialsSignin' ? "Sai mật khẩu" : result.error);
-      } else if (result?.ok) {
-        console.log('Sign in successful, redirecting...');
-        router.push('/customer');
+      // Kiểm tra role, nếu là admin thì chuyển hướng sang trang admin
+      if (roles.includes("ROLE_ADMIN")) {
+        router.push("/admin");
+      } else {
+        router.push("/customer");
       }
     } catch (err: any) {
-      console.error('An unexpected error occurred during sign in:', err);
-      setError(err.message || "Đã xảy ra lỗi trong quá trình đăng nhập.");
-    } finally {
-      setLoading(false);
+      setError(err.message || "Đã xảy ra lỗi trong quá trình đăng nhập");
     }
+    setLoading(false);
   };
 
   return (
@@ -57,7 +59,7 @@ export default function SignIn() {
             <div className="flex flex-wrap items-center">
               <div className="w-full xl:w-1/2">
                 <div className="w-full p-2 sm:p-3 xl:p-4">
-                  {/* Pass handleLogin and error down */}
+                  {/* Truyền hàm handleLogin vào component Signin */}
                   <Signin onLogin={handleLogin} error={error} loading={loading} />
                 </div>
               </div>

@@ -5,9 +5,18 @@ import React, { useState } from "react";
 import InputGroup from "@/components/ui/FormElements/InputGroup";
 import { Checkbox } from "@/components/ui/FormElements/checkbox";
 
+// Interface cho response từ API
+interface LoginResponse {
+  id: number;
+  username: string;
+  roles: string[];
+  token: string;
+}
+
 interface SigninWithPasswordProps {
   onLogin: (userName: string, password: string) => Promise<void>;
   error: string;
+  loading?: boolean;
 }
 
 export default function SigninWithPassword({ onLogin, error }: SigninWithPasswordProps) {
@@ -31,9 +40,43 @@ export default function SigninWithPassword({ onLogin, error }: SigninWithPasswor
     setLoading(true);
 
     try {
+      console.log('Attempting to login with:', { username: data.username });
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/api$/, '') || '';
+      console.log('API URL:', `${apiUrl}/api/auth/signin`);
+
+      // Gọi API đăng nhập
+      const response = await fetch(`${apiUrl}/api/auth/signin`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password
+        }),
+        credentials: 'include'
+      });
+
+      console.log('Response status:', response.status);
+      const responseData = await response.json();
+      console.log('Response data:', responseData);
+
+      if (!response.ok) {
+        throw new Error(responseData.message || 'Đăng nhập thất bại');
+      }
+
+      // Lưu token vào localStorage nếu remember me được chọn
+      if (data.remember) {
+        localStorage.setItem('token', responseData.token);
+      } else {
+        sessionStorage.setItem('token', responseData.token);
+      }
+
+      // Gọi callback onLogin
       await onLogin(data.username, data.password);
     } catch (err: any) {
-      console.error('Login failed in SigninWithPassword:', err);
+      console.error('Login failed:', err);
+      throw err;
     } finally {
       setLoading(false);
     }

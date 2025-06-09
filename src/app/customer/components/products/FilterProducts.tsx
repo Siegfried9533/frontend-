@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { cn } from "@/lib/utils";
-import { brandsData } from "@/data/brands/brandsdata";
+import { brandsData } from "@/app/customer/data/brands/brandsdata";
 import { Label } from "../ui/label";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../ui/button";
-import { colors } from "@/data/products/productColor";
-import { dummyCategories } from "@/data/category/categoryData";
+import { colors } from "@/app/customer/data/products/productColor";
+import { dummyCategories, Category } from "@/app/customer/data/category/categoryData";
 
 const FilterProducts = () => {
   // State variables for filters
@@ -153,7 +153,7 @@ const FilterProducts = () => {
               className={cn(
                 "px-4 py-1 rounded-full bg-slate-200 dark:bg-slate-700 cursor-pointer",
                 category.name === selectedCategory &&
-                  "bg-blue-400 dark:bg-blue-700"
+                "bg-blue-400 dark:bg-blue-700"
               )}
               key={category.id}
             >

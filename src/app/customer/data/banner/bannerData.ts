@@ -1,26 +1,35 @@
-export const bannerData = [
+export interface Banner {
+    title: string;
+    description: string;
+    images: string[];
+    button: string;
+    discountText: string;
+    link: string;
+}
+
+export const bannerData: Banner[] = [
     {
-        title: 'Dominate the Competition with the Legion X7',
-        description: 'Unleash ultimate gaming power with the Legion X7. Featuring a top-of-the-line processor, powerful graphics card, and a high-refresh-rate display.',
-        images: ['/images/banner/gaming-laptop.png'],
-        button: 'Shop Gaming Laptops',
+        title: 'The Alchemist',
+        description: "A shepherd's journey to find his personal legend.",
+        images: ['/images/product/thealchemist.jpg'],
+        button: 'Buy Now',
         discountText: 'Buy now Get 10% off',
-        link: `shop?category=Computers`
+        link: 'shop?category=Fiction',
     },
     {
-        title: 'Introducing the All-New NovaPhone 15',
-        description: 'Experience unparalleled performance with our most advanced phone yet. Blazing-fast processor, stunning camera system, and a revolutionary display.',
-        images: ['/images/banner/iphone.png'],
-        button: 'Order Now',
+        title: 'The Hobbit',
+        description: "A hobbit's adventurous journey to reclaim treasure from a dragon.",
+        images: ['/images/product/thehobbit.jpg'],
+        button: 'Shop Fantasy',
         discountText: 'Buy now Get 5% off',
-        link: `shop?category=Smartphones`
+        link: 'shop?category=Fantasy',
     },
     {
-        title: 'High-resolution noise-canceling headphones.',
-        description: 'Immerse Yourself in Pure Sound with the SonicPro Max',
-        images: ['/images/banner/headphone.png'],
-        button: 'Shop Headphones',
+        title: 'Pride and Prejudice',
+        description: 'A romantic novel about manners and matrimonial machinations.',
+        images: ['/images/product/prideandprejudice.jpg'],
+        button: 'Order Now',
         discountText: 'Buy now Get 15% off',
-        link: 'shop?category=Headphones'
+        link: 'shop?category=Romance',
     },
-]
+];

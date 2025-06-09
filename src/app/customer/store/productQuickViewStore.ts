@@ -1,6 +1,6 @@
-import { Product } from '@/types';
-import {create} from 'zustand';
-
+'use client';
+import { Product } from '@/app/customer/types';
+import { create } from 'zustand';
 
 interface ProductQuickViewState {
   isOpen: boolean;
@@ -9,14 +9,14 @@ interface ProductQuickViewState {
   closeModal: () => void;
 }
 
-export const useProductQuickViewStore = create<ProductQuickViewState>((set) => ({
+const useProductQuickViewStore = create<ProductQuickViewState>((set) => ({
   isOpen: false,
   product: null,
-  openModal: (product: Product) => {
-    set({ isOpen: true, product: product });
-  },
+  openModal: (product: Product) => set({ isOpen: true, product }),
   closeModal: () => set({ isOpen: false, product: null }),
 }));
+
+export default useProductQuickViewStore;
 
 // Dummy function to fetch product data (replace this with your actual API call)
 // const fetchProduct = (productId: number): Product => {

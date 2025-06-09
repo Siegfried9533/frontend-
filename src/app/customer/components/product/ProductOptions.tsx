@@ -10,14 +10,14 @@ import {
 import useCartStore from "@/app/customer/store/cartStore";
 import useWishlistStore from "@/app/customer/store/wishlistStore";
 import { showToast } from "@/app/customer/lib/showToast";
-import { Product } from "@/types";
-import { useProductQuickViewStore } from "@/app/customer/store/productQuickViewStore";
+import { Product } from "@/app/customer/types";
+import useProductQuickViewStore from "@/app/customer/store/productQuickViewStore";
 import Loader from "../others/Loader";
 
 const ProductOptions = ({ product }: { product: Product }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { openModal } = useProductQuickViewStore();
-  const { images, name } = product;
+  const { image, title } = product;
 
   const { addToCart } = useCartStore();
   const { addToWishlist, isInWishlist } = useWishlistStore();
@@ -31,16 +31,16 @@ const ProductOptions = ({ product }: { product: Product }) => {
   }
 
   const handleAddToCart = () => {
-    addToCart({ ...product, quantity: 1, selectedColor: "" });
-    showToast("Item Added To Cart", images[0], name);
+    addToCart({ ...product, quantity: 1, selectedColor: "default" });
+    showToast("Item Added To Cart", image, title);
   };
 
   const handleAddToWishList = () => {
     if (isInWishlist(product.id)) {
-      showToast("Item Added To Wishlist", images[0], name);
+      showToast("Item Added To Wishlist", image, title);
     } else {
       addToWishlist(product);
-      showToast("Item Already Exist In Wishlist", images[0], name);
+      showToast("Item Already Exist In Wishlist", image, title);
     }
   };
 

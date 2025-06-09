@@ -1,70 +1,67 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Separator } from "../ui/separator";
-import ProductTab from "./ProductTab";
 import BuyNowBtn from "../buttons/BuyNowBtn";
 import AddToCartBtn from "../buttons/AddToCartBtn";
 import ProductQuantityChange from "./ProductQuantityChange";
 import RatingReview from "../others/RatingReview";
 import ProductDescription from "./ProductDescription";
-import ProductColorSelection from "./ProductColorSelection";
 import { Product } from "@/app/customer/types";
 import Link from "next/link";
 import { calculateDiscount } from "@/app/customer/lib/calculateDiscount";
 
+// Component hiển thị chi tiết sản phẩm (sách)
+// TODO: Có thể tuỳ chỉnh layout, style, logic hiển thị giá, số lượng, nút mua hàng...
 const ProductDetails = ({ product }: { product: Product }) => {
+  // State lưu số lượng sản phẩm muốn mua
   const [quantity, setQuantity] = useState(1);
-  const [selectedColor, setSelectedColor] = useState("");
 
   return (
+    // TODO: Tuỳ chỉnh padding, margin, khoảng cách giữa các phần tử
     <div className="space-y-2 mt-2">
-      {/* Category */}
+      {/* Hiển thị thể loại sách, có thể tuỳ chỉnh style button, màu nền, bo góc */}
       <Link
         href={`/shop?category=${product.category}`}
         className="bg-lime-500 py-1 px-4 rounded-full w-fit"
       >
-        {product?.category}
+        {product.category}
       </Link>
-      {/* Product Name */}
+      {/* Tiêu đề sách, có thể tuỳ chỉnh font, cỡ chữ, màu sắc */}
       <h2 className="text-2xl md:text-3xl font-bold capitalize">
-        {product?.name}
+        {product.title}
       </h2>
-      {/* Rating and Review */}
+      {/* Đánh giá sao, có thể tuỳ chỉnh số lượng review, màu sao, hiệu ứng hover */}
       <RatingReview
-        rating={product?.rating || 0}
-        review={product?.reviews.length || 0}
+        rating={product.rating}
+        review={0}
       />
-      {/* Product Description */}
-      <ProductDescription description={product?.description as string} />
+      {/* Mô tả sách, có thể tuỳ chỉnh độ dài, style, hiển thị rút gọn/mở rộng */}
+      <ProductDescription description={product.description} />
 
-      {/* product stock */}
+      {/* Hiển thị trạng thái kho hàng, có thể tuỳ chỉnh text, màu sắc, logic hiển thị */}
       <div>
-        {product.stockItems === 0 ? (
-          <p className="text-lg  w-fit rounded-md text-muted-foreground">out of stock</p>
+        {product.quantity === 0 ? (
+          <p className="text-lg w-fit rounded-md text-muted-foreground">out of stock</p>
         ) : (
           <p className="text-lg w-fit rounded-md text-muted-foreground">
-            Only <span className="text-lg text-black dark:text-white">({product.stockItems})</span> items in stock
+            Only <span className="text-lg text-black dark:text-white">({product.quantity})</span> items in stock
           </p>
         )}
       </div>
-      {/* product colors */}
-      <ProductColorSelection
-        color={selectedColor}
-        setColor={setSelectedColor}
-        allColors={product.color!}
-      />
 
+      {/* Khu vực hiển thị giá và chọn số lượng */}
       <div className="flex items-center gap-6">
         <div className="">
-          {/* Original Price */}
+          {/* Giá gốc, có thể tuỳ chỉnh style, màu, font, có thể ẩn nếu không có giảm giá */}
           <p className="text-muted-foreground line-through text-2xl">
-            ${product?.price}
+            ${product.price}
           </p>
           <div className="flex items-center gap-4">
-            {/* Discounted Price */}
+            {/* Giá sau giảm, có thể tuỳ chỉnh border, màu, hiệu ứng, logic tính giá */}
             <p className="text-3xl font-bold text-green-500 border-green-500 border py-2 px-6 rounded-lg">
               ${calculateDiscount(product.price, product.discount)}
             </p>
+            {/* Component thay đổi số lượng mua, có thể tuỳ chỉnh min/max, style nút */}
             <ProductQuantityChange
               quantity={quantity}
               setQuantity={setQuantity}
@@ -72,16 +69,15 @@ const ProductDetails = ({ product }: { product: Product }) => {
           </div>
         </div>
       </div>
+      {/* Khu vực nút mua hàng, có thể tuỳ chỉnh thứ tự, style, logic truyền dữ liệu */}
       <div className="flex flex-col md:flex-row items-center gap-4 !my-6">
-        {/* Add To Cart Button */}
-        <AddToCartBtn product={{ ...product, quantity, selectedColor }} />
-        {/* Buy Now Button */}
-        <BuyNowBtn product={{ ...product, quantity, selectedColor }} />
+        {/* Nút thêm vào giỏ hàng */}
+        <AddToCartBtn product={{ ...product, quantity, selectedColor: "default" }} />
+        {/* Nút mua ngay */}
+        <BuyNowBtn product={{ ...product, quantity, selectedColor: "default" }} />
       </div>
-      {/* Separator */}
+      {/* Separator, có thể tuỳ chỉnh màu, độ dày, margin */}
       <Separator className="!mt-4" />
-      {/* Product Tab */}
-      <ProductTab aboutItem={product?.aboutItem!} reviews={product?.reviews} />
     </div>
   );
 };

@@ -1,11 +1,20 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Customer, mockCustomers } from '@/app/admin/lib/mock/customer';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
+
+// Interface cho dữ liệu khách hàng
+interface Customer {
+    id: string;
+    name: string;
+    email: string;
+    sex: string;
+    dateOfBirth: string;
+    role: string;
+}
 
 interface EditCustomerModalProps {
     open: boolean;

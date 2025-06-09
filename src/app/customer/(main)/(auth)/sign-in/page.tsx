@@ -1,10 +1,12 @@
+'use client';
+import { useRouter } from 'next/navigation';
 
-import SignInForm from "@/components/forms/SignInForm";
+const SomeComponent = () => {
+  const router = useRouter();
 
-const SigninPage = () => {
-  return (
-    <SignInForm />
-  );
+  const handleClick = () => {
+    router.push('/auth/sign-in');
+  };
+
+  return <button onClick={handleClick}>Go to Sign In</button>;
 };
-
-export default SigninPage;

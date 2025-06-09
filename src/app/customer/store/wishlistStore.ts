@@ -1,5 +1,5 @@
 'use client';
-import { Product } from '@/types';
+import { Product } from '@/app/customer/types';
 import { create } from 'zustand';
 
 interface WishlistState {
@@ -9,39 +9,29 @@ interface WishlistState {
   isInWishlist: (itemId: number) => boolean;
 }
 
-const useWishlistStore = create<WishlistState>((set, get) => {
-  // Check if localStorage is available
-  const isLocalStorageAvailable = typeof window !== 'undefined' && window.localStorage;
+const STORAGE_KEY = "wishlist-items";
 
-  // Load wishlist items from localStorage on initialization
-  const initialWishlistItems = isLocalStorageAvailable && localStorage.getItem('wishlist-items');
+const useWishlistStore = create<WishlistState>((set) => {
+  const isLocalStorageAvailable = typeof window !== "undefined" && window.localStorage;
+  const initialWishlistItems = isLocalStorageAvailable && localStorage.getItem(STORAGE_KEY);
   const parsedWishlistItems: Product[] = initialWishlistItems ? JSON.parse(initialWishlistItems) : [];
 
   return {
     wishlistItems: parsedWishlistItems,
-    addToWishlist: (newItem: Product) => {
-      set((state) => {
-        const existingItem = state.wishlistItems.find((item) => item.id === newItem.id);
-        return {
-          wishlistItems: existingItem ? state.wishlistItems : [...state.wishlistItems, { ...newItem }],
-        };
-      });
-      if (isLocalStorageAvailable) {
-        localStorage.setItem('wishlist-items', JSON.stringify(get().wishlistItems));
-      }
+    addToWishlist: (newItem: Product): void => {
+      set((state) => ({
+        wishlistItems: [...state.wishlistItems, newItem],
+      }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(useWishlistStore.getState().wishlistItems));
     },
-    removeFromWishlist: (itemId: number) => {
+    removeFromWishlist: (itemId: number): void => {
       set((state) => ({
         wishlistItems: state.wishlistItems.filter((item) => item.id !== itemId),
       }));
-      if (isLocalStorageAvailable) {
-        localStorage.setItem('wishlist-items', JSON.stringify(get().wishlistItems));
-      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(useWishlistStore.getState().wishlistItems));
     },
-    isInWishlist: (itemId: number) => {
-      // Access state through the get function
-      const { wishlistItems } = get();
-      return wishlistItems.some((item) => item.id === itemId);
+    isInWishlist: (itemId: number): boolean => {
+      return useWishlistStore.getState().wishlistItems.some((item) => item.id === itemId);
     },
   };
 });

@@ -2,17 +2,25 @@
 
 import Breadcrumb from "@/app/admin/components/common/Breadcrumbs/Breadcrumb";
 import Image from "next/image";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CameraIcon } from "./_components/icons";
 import { SocialAccounts } from "./_components/social-accounts";
+import { User2 } from "lucide-react";
 
 export default function Page() {
   const [data, setData] = useState({
-    name: "Danish Heilium",
-    profilePhoto: "/images/user/user-03.png",
+    name: "",
+    profilePhoto: "",
     coverPhoto: "/images/cover/cover-01.png",
   });
+
+  useEffect(() => {
+    const userName = localStorage.getItem("username") || "Admin";
+    setData(prev => ({
+      ...prev,
+      name: userName,
+    }));
+  }, []);
 
   const handleChange = (e: any) => {
     if (e.target.name === "profilePhoto") {
@@ -77,7 +85,7 @@ export default function Page() {
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-[176px] sm:p-3">
             <div className="relative drop-shadow-2">
-              {data?.profilePhoto && (
+              {data?.profilePhoto ? (
                 <>
                   <Image
                     src={data?.profilePhoto}
@@ -103,6 +111,24 @@ export default function Page() {
                     />
                   </label>
                 </>
+              ) : (
+                <div className="flex items-center justify-center w-full h-full min-h-[160px] min-w-[160px] bg-gray-200 rounded-full">
+                  <User2 size={80} className="text-gray-400" />
+                  <label
+                    htmlFor="profilePhoto"
+                    className="absolute bottom-0 right-0 flex size-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
+                  >
+                    <CameraIcon />
+                    <input
+                      type="file"
+                      name="profilePhoto"
+                      id="profilePhoto"
+                      className="sr-only"
+                      onChange={handleChange}
+                      accept="image/png, image/jpg, image/jpeg"
+                    />
+                  </label>
+                </div>
               )}
             </div>
           </div>
